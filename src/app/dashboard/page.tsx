@@ -1,4 +1,4 @@
-﻿'use client';
+ï»¿'use client';
 
 import { useState, useMemo, useCallback, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -17,10 +17,10 @@ import { CompsPanel } from '@/components/panels/CompsPanel';
 type TabId = 'overview' | 'rehab' | 'strategy' | 'comps';
 
 const TABS: Array<{ id: TabId; label: string; icon: string }> = [
-  { id: 'overview',  label: 'Deal Overview',      icon: '📊' },
-  { id: 'rehab',     label: 'Rehab Breakdown',    icon: '🔨' },
-  { id: 'strategy',  label: 'Strategy Optimizer', icon: '🎯' },
-  { id: 'comps',     label: 'Comps & Risks',      icon: '🏘' },
+  { id: 'overview',  label: 'Deal Overview',      icon: 'ð' },
+  { id: 'rehab',     label: 'Rehab Breakdown',    icon: 'ð¨' },
+  { id: 'strategy',  label: 'Strategy Optimizer', icon: 'ð¯' },
+  { id: 'comps',     label: 'Comps & Risks',      icon: 'ð' },
 ];
 
 function PrefillLoader({ onLoad }: { onLoad: (data: Partial<PropertyInput>) => void }) {
@@ -151,12 +151,12 @@ const sendToCRM = async () => {
       const data = await response.json()
 
       if (data.success) {
-        alert('âœ… Deal data sent to UnderwriteIQ CRM!\n\nGo to the CRM tab in your dashboard and click "Import from FlipIQ" on the matching lead to populate the deal numbers.')
+        alert('Ã¢Åâ¦ Deal data sent to UnderwriteIQ CRM!\n\nGo to the CRM tab in your dashboard and click "Import from FlipIQ" on the matching lead to populate the deal numbers.')
       } else {
-        alert('âŒ Could not send to CRM. Make sure UnderwriteIQ is running at localhost:8000')
+        alert('Ã¢ÂÅ Could not send to CRM. Make sure UnderwriteIQ is running at localhost:8000')
       }
     } catch (error) {
-      alert('âŒ Connection failed. Make sure both FlipIQ and UnderwriteIQ are running.')
+      alert('Ã¢ÂÅ Connection failed. Make sure both FlipIQ and UnderwriteIQ are running.')
     }
   }
   const exportPDF = async () => {
@@ -168,7 +168,7 @@ const sendToCRM = async () => {
       const margin = 18;
       let y        = 0;
 
-      // â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // Ã¢ââ¬Ã¢ââ¬ Header Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬
       doc.setFillColor(31, 58, 95);
       doc.rect(0, 0, W, 38, 'F');
 
@@ -202,7 +202,7 @@ const sendToCRM = async () => {
 
       y = 48;
 
-      // â”€â”€ Address â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // Ã¢ââ¬Ã¢ââ¬ Address Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬
       doc.setTextColor(31, 58, 95);
       doc.setFontSize(14);
       doc.setFont('helvetica', 'bold');
@@ -220,17 +220,17 @@ const sendToCRM = async () => {
         input.exitStrategy.toUpperCase(),
         input.isWaterfront ? 'Waterfront' : '',
         input.hasPool ? 'Pool' : '',
-      ].filter(Boolean).join(' Â· ');
+      ].filter(Boolean).join(' ÃÂ· ');
       doc.text(details, margin, y);
       y += 10;
 
-      // â”€â”€ Divider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // Ã¢ââ¬Ã¢ââ¬ Divider Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬
       doc.setDrawColor(221, 227, 236);
       doc.setLineWidth(0.5);
       doc.line(margin, y, W - margin, y);
       y += 8;
 
-      // â”€â”€ Key metrics â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // Ã¢ââ¬Ã¢ââ¬ Key metrics Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬
       doc.setFontSize(8);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(107, 124, 147);
@@ -281,7 +281,7 @@ const sendToCRM = async () => {
 
       y += Math.ceil(metrics.length / 4) * (boxH + 3) + 8;
 
-      // â”€â”€ Waterfall â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // Ã¢ââ¬Ã¢ââ¬ Waterfall Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬
       doc.setDrawColor(221, 227, 236);
       doc.line(margin, y, W - margin, y);
       y += 6;
@@ -338,7 +338,7 @@ const sendToCRM = async () => {
 
       y += 6;
 
-      // â”€â”€ Rehab breakdown â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // Ã¢ââ¬Ã¢ââ¬ Rehab breakdown Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬
       doc.setDrawColor(221, 227, 236);
       doc.line(margin, y, W - margin, y);
       y += 6;
@@ -381,7 +381,7 @@ const sendToCRM = async () => {
 
       y += Math.ceil(activeItems.length / 3) * 10 + 6;
 
-      // â”€â”€ Risk flags â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // Ã¢ââ¬Ã¢ââ¬ Risk flags Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬
       if (y < 240) {
         doc.setDrawColor(221, 227, 236);
         doc.line(margin, y, W - margin, y);
@@ -411,7 +411,7 @@ const sendToCRM = async () => {
         });
       }
 
-      // â”€â”€ Comp disclaimer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // Ã¢ââ¬Ã¢ââ¬ Comp disclaimer Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬
       if (y < 265) {
         y += 4;
         doc.setFillColor(254, 245, 231);
@@ -425,7 +425,7 @@ const sendToCRM = async () => {
         y += 18;
       }
 
-      // â”€â”€ Footer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // Ã¢ââ¬Ã¢ââ¬ Footer Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬
       doc.setFillColor(31, 58, 95);
       doc.rect(0, 282, W, 15, 'F');
       doc.setTextColor(168, 191, 218);
@@ -466,7 +466,7 @@ const sendToCRM = async () => {
           </div>
           {addressLine && (
             <div style={{ fontSize:12, color:'#A8BFDA', borderLeft:'1px solid #2d4f7a', paddingLeft:16 }}>
-              📍 {addressLine}
+              ð {addressLine}
             </div>
           )}
         </div>
@@ -474,24 +474,24 @@ const sendToCRM = async () => {
         <div style={{ display:'flex', alignItems:'center', gap:10 }}>
           {dangerCount > 0 && (
             <span style={{ fontSize:11, background:'#fdecea', color:'#C0392B', border:'1px solid #f5b7b1', padding:'4px 12px', borderRadius:20, fontWeight:600 }}>
-              🚨 {dangerCount} critical
+              ð¨ {dangerCount} critical
             </span>
           )}
           {warningCount > 0 && (
             <span style={{ fontSize:11, background:'#fef5e7', color:'#E07B2A', border:'1px solid #f8c471', padding:'4px 12px', borderRadius:20, fontWeight:600 }}>
-              ⚠️  {warningCount} warnings
+              â ï¸Â  {warningCount} warnings
             </span>
           )}
           <button
             onClick={exportPDF}
             disabled={exporting}
             style={{ fontSize:12, fontWeight:700, padding:'7px 16px', borderRadius:8, border:'2px solid #2EC4B6', background:'#1a4a40', color:'#2EC4B6', cursor:exporting?'not-allowed':'pointer', display:'flex', alignItems:'center', gap:6 }}>
-            {exporting ? ⏳ Exporting...' : 📄„ Export PDF'}
+            {exporting ? â³ Exporting...' : ðâ Export PDF'}
          </button>
           <button
             onClick={sendToCRM}
             style={{ fontSize:12, fontWeight:700, padding:'7px 16px', borderRadius:8, border:'2px solid #0F6E56', background:'#0a3d2e', color:'#2EC4B6', cursor:'pointer', display:'flex', alignItems:'center', gap:6 }}>
-            🏠 Send to CRM
+            ð  Send to CRM
           </button>
           <span style={{ fontSize:11, fontWeight:700, padding:'4px 14px', borderRadius:20, border:`2px solid ${scoreColor}`, color:'#fff', background:score.score>=70?'#1a8a82':score.score>=45?'#b5601a':'#922b21' }}>
             Deal Score {score.score}/100 ({score.grade})
@@ -518,7 +518,7 @@ const sendToCRM = async () => {
           {Object.values(enabledItems).some(v => v === false) && activeTab !== 'rehab' && (
             <div style={{ background:'#e8faf9', border:'1px solid #2EC4B6', borderRadius:10, padding:'10px 16px', marginBottom:16, display:'flex', alignItems:'center', justifyContent:'space-between', fontSize:13 }}>
               <span>
-                <strong style={{ color:'#1a8a82' }}>Rehab scope adjusted —” </strong>
+                <strong style={{ color:'#1a8a82' }}>Rehab scope adjusted ââ </strong>
                 <span style={{ color:'#1F3A5F' }}>
                   Using <strong>{f(adjustedRehab.total)}</strong> adjusted rehab
                   (vs <strong>{f(rehab.total)}</strong> full). All calculations updated.

@@ -1,4 +1,4 @@
-﻿import type {
+ï»¿import type {
   PropertyInput, RehabResult, RehabLineItems,
   FinishLevel, RegionalPricing,
 } from '@/types';
@@ -54,7 +54,7 @@ function getAgeMultiplier(yearBuilt: number): number {
   return 1.00;
 }
 
-// â”€â”€ BASE COSTS by condition â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢ââ¬Ã¢ââ¬ BASE COSTS by condition Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬
 // Light    = cosmetic only   (paint, floors, doors, landscaping, minor kitchen/bath touch-up)
 // Moderate = systems + cosmetic (adds roof, HVAC, electrical, plumbing, windows)
 // Heavy    = major systems   (full systems replacement + cosmetic)
@@ -76,7 +76,7 @@ interface BaseCost {
 }
 
 const BASE_COSTS: Record<string, BaseCost> = {
-  // LIGHT â€” cosmetic only
+  // LIGHT Ã¢â¬â cosmetic only
   // No roof, HVAC, electrical, plumbing, windows
   // Small kitchen/bath cosmetic touch-up only
   light: {
@@ -93,7 +93,7 @@ const BASE_COSTS: Record<string, BaseCost> = {
     windows:    { perUnit: 0, avgUnits: 0 },
     doors:      { perUnit: 200, avgUnits: 4 },
   },
-  // MODERATE â€” systems + cosmetic
+  // MODERATE Ã¢â¬â systems + cosmetic
   // Adds roof (partial), HVAC, electrical, plumbing, windows
   moderate: {
     kitchen:    { base: 16500 },
@@ -109,7 +109,7 @@ const BASE_COSTS: Record<string, BaseCost> = {
     windows:    { perUnit: 380, avgUnits: 6 },
     doors:      { perUnit: 350, avgUnits: 6 },
   },
-  // HEAVY â€” major systems replacement
+  // HEAVY Ã¢â¬â major systems replacement
   heavy: {
     kitchen:    { base: 29000 },
     bathrooms:  { base: 13500, perBath: 5500 },
@@ -124,7 +124,7 @@ const BASE_COSTS: Record<string, BaseCost> = {
     windows:    { perUnit: 480, avgUnits: 10 },
     doors:      { perUnit: 480, avgUnits: 8 },
   },
-  // GUT â€” full rehab, everything
+  // GUT Ã¢â¬â full rehab, everything
   gut: {
     kitchen:    { base: 44000 },
     bathrooms:  { base: 20000, perBath: 8000 },
@@ -210,7 +210,7 @@ export function calculateRehab(input: PropertyInput): RehabResult {
       * stratMult.doors * materialM,
   };
 
-  // Pool â€” add if property has existing pool needing work, or condition is heavy/gut
+  // Pool Ã¢â¬â add if property has existing pool needing work, or condition is heavy/gut
   calc.pool = input.hasPool
     ? (condition === 'light' ? 2500 :
        condition === 'moderate' ? 6500 :
