@@ -43,13 +43,13 @@ interface Props {
 export function RehabBreakdownPanel({
   input, rehab, enabledItems, onToggle, onSetEnabled,
 }: Props) {
-  const allEntries  = Object.entries(rehab.lineItems).filter(([, v]) => v > 0);
+  const allEntries  = Object.entries(rehab.lineItems).filter(([, v]) => (v ?? 0) > 0);
   const allKeys     = allEntries.map(([k]) => k);
 
   const activeItems = allEntries.filter(([k]) => enabledItems[k] !== false);
   const zeroedItems = allEntries.filter(([k]) => enabledItems[k] === false);
-  const adjustedTotal = activeItems.reduce((a, [, v]) => a + v, 0);
-  const savedAmount   = zeroedItems.reduce((a, [, v]) => a + v, 0);
+  const adjustedTotal = activeItems.reduce((a, [, v]) => a + (v ?? 0), 0);
+  const savedAmount   = zeroedItems.reduce((a, [, v]) => a + (v ?? 0), 0);
 
   const ageMult =
     input.yearBuilt < 1970 ? '1.20×' :
@@ -160,13 +160,13 @@ export function RehabBreakdownPanel({
                   {/* Amount */}
                   <span style={{ fontFamily:'monospace', fontSize:13, color:isOn?'#1F3A5F':'#9ca3af', marginRight:12 }}>
                     {isOn
-                      ? fmt(val)
-                      : <span style={{ textDecoration:'line-through', color:'#ccc' }}>{fmt(val)}</span>}
+                      ? fmt(val ?? 0)
+                      : <span style={{ textDecoration:'line-through', color:'#ccc' }}>{fmt(val ?? 0)}</span>}
                   </span>
 
                   {/* Percent */}
                   <span style={{ fontSize:11, color:'#6B7C93', width:36, textAlign:'right' }}>
-                    {isOn ? ((val / rehab.total) * 100).toFixed(0) + '%' : '—'}
+                    {isOn ? (((val ?? 0) / rehab.total) * 100).toFixed(0) + '%' : '—'}
                   </span>
                 </div>
               );
@@ -206,10 +206,10 @@ export function RehabBreakdownPanel({
                     {ITEM_LABELS[key] || key}
                   </span>
                   <div style={{ flex:1, background:'#F0F2F5', borderRadius:4, height:8 }}>
-                    <div style={{ width:isOn?`${(val/rehab.total)*100}%`:'0%', height:8, borderRadius:4, background:COLORS[i%COLORS.length], transition:'width 0.3s' }} />
+                    <div style={{ width:isOn?`${((val ?? 0)/rehab.total)*100}%`:'0%', height:8, borderRadius:4, background:COLORS[i%COLORS.length], transition:'width 0.3s' }} />
                   </div>
                   <span style={{ fontSize:11, fontFamily:'monospace', width:52, color:'#1F3A5F', flexShrink:0 }}>
-                    {isOn ? fmt(val) : '—'}
+                    {isOn ? fmt(val ?? 0) : '—'}
                   </span>
                 </div>
               );

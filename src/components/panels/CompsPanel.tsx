@@ -84,8 +84,7 @@ export function CompsPanel({ input, comps, risks, onUpdateArv }: Props) {
           input.zipCode,
           input.sqft,
           input.bedrooms,
-          input.isWaterfront,
-          input.hasPool,
+       
         )
       : 0;
 

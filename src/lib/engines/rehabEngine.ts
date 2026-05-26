@@ -243,15 +243,15 @@ export function calculateRehab(input: PropertyInput): RehabResult {
     ...(hotTub > 0     && { hotTub:     Math.round(hotTub) }),
   };
 
-  const total = Object.values(lineItems).reduce((a, b) => a + b, 0);
+  const total = Object.values(lineItems).reduce((a, b) => (a ?? 0) + (b ?? 0), 0);
   const finishLevel: FinishLevel =
     exitStrategy === 'str' ? 'premium' :
     exitStrategy === 'flip' ? 'standard' : 'economy';
 
   return {
     lineItems,
-    total:              Math.round(total),
-    perSqft:            Math.round(total / sqft),
+    total:              Math.round(total ?? 0),
+    perSqft:            Math.round((total ?? 0) / sqft),
     region:             regional.region,
     regionLabel:        regional.regionLabel,
     laborMultiplier:    regional.laborMultiplier,

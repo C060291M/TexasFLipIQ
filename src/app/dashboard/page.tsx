@@ -96,12 +96,12 @@ export default function Dashboard() {
         (items as Record<string, number>)[key] = 0;
       }
     }
-    const total = Object.values(items).reduce((a, b) => a + (b ?? 0), 0);
+    const total = Object.values(items).reduce((a: number, b: number | undefined) => a + (b ?? 0), 0);
     return {
       ...rehab,
       lineItems: items,
-      total: Math.round(total),
-      perSqft: input.sqft > 0 ? Math.round(total / input.sqft) : 0,
+      total: Math.round(total ?? 0),
+      perSqft: input.sqft > 0 ? Math.round((total ?? 0) / input.sqft) : 0,
     };
   }, [rehab, enabledItems, input.sqft]);
 
@@ -359,8 +359,8 @@ const sendToCRM = async () => {
       };
 
       const activeItems = Object.entries(adjustedRehab.lineItems)
-        .filter(([, v]) => v > 0)
-        .sort((a, b) => b[1] - a[1]);
+        .filter(([, v]) => (v ?? 0) > 0)
+        .sort((a, b) => (b[1] ?? 0) - (a[1] ?? 0));
 
       const colW2 = (W - margin * 2) / 3;
       activeItems.forEach(([key, val], i) => {
@@ -376,7 +376,7 @@ const sendToCRM = async () => {
         doc.text(labelMap[key] || key, x + 2, yy + 2);
         doc.setFont('helvetica', 'bold');
         doc.setTextColor(31, 58, 95);
-        doc.text(f(val), x + colW2 - 4, yy + 2, { align: 'right' });
+        doc.text(f(val ?? 0), x + colW2 - 4, yy + 2, { align: 'right' });
       });
 
       y += Math.ceil(activeItems.length / 3) * 10 + 6;

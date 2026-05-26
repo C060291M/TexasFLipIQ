@@ -45,7 +45,7 @@ export interface PropertyInput {
   finishLevel?: FinishLevel;
   customRehabItems?: Partial<RehabLineItems>;
 }
-}
+
 
 export interface RehabLineItems {
   [key: string]: number | undefined;

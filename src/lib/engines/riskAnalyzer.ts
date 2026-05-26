@@ -56,9 +56,9 @@ export function analyzeRisks(input: PropertyInput, rehab: RehabResult, deal: Dea
   }
 
   if (exitStrategy === 'str') {
-    let strRule = { level:'low' as const, notes:'No known major STR restrictions. Always verify current local ordinances.' };
+    let strRule: { level: 'high' | 'medium' | 'low'; notes: string } = { level: 'low', notes: 'No known major STR restrictions. Always verify current local ordinances.' };
     for (const [prefix, rule] of Object.entries(STR_RULES)) {
-      if (zipCode.startsWith(prefix)) { strRule = rule; break; }
+      if (zipCode.startsWith(prefix)) { strRule = rule as any; break; }
     }
     flags.push({ id:`str-reg-${strRule.level}`, severity:strRule.level === 'high' ? 'danger' : strRule.level === 'medium' ? 'warning' : 'info', category:'regulatory', title:strRule.level === 'high' ? 'High STR regulatory risk' : strRule.level === 'medium' ? 'STR permit required' : 'Verify STR regulations', description:strRule.notes, mitigation:'Contact city planning department before closing.' });
   }

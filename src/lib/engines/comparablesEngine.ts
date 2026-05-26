@@ -36,8 +36,8 @@ export function estimateMarketPrice(zipCode: string, sqft: number, beds: number)
 }
 
 export function generateComps(input: PropertyInput): CompsResult {
-  const { sqft, beds, bathrooms, zipCode, yearBuilt, exitStrategy, arv, bedrooms } = input;
-  const bedsNum = bedrooms || beds || 3;
+  const { sqft, bathrooms, zipCode, yearBuilt, exitStrategy, arv, bedrooms } = input;
+  const bedsNum = bedrooms || 3;
   const isStr   = exitStrategy === 'str';
   const isAustin = zipCode.startsWith('787') || zipCode.startsWith('786');
 
