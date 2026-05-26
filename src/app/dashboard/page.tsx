@@ -17,10 +17,10 @@ import { CompsPanel } from '@/components/panels/CompsPanel';
 type TabId = 'overview' | 'rehab' | 'strategy' | 'comps';
 
 const TABS: Array<{ id: TabId; label: string; icon: string }> = [
-  { id: 'overview',  label: 'Deal Overview',      icon: 'ðŸ“Š' },
-  { id: 'rehab',     label: 'Rehab Breakdown',    icon: 'ðŸ”¨' },
-  { id: 'strategy',  label: 'Strategy Optimizer', icon: 'ðŸŽ¯' },
-  { id: 'comps',     label: 'Comps & Risks',      icon: 'ðŸ˜' },
+  { id: 'overview',  label: 'Deal Overview',      icon: '📊' },
+  { id: 'rehab',     label: 'Rehab Breakdown',    icon: '🔨' },
+  { id: 'strategy',  label: 'Strategy Optimizer', icon: '🎯' },
+  { id: 'comps',     label: 'Comps & Risks',      icon: '🏘' },
 ];
 
 function PrefillLoader({ onLoad }: { onLoad: (data: Partial<PropertyInput>) => void }) {
@@ -466,7 +466,7 @@ const sendToCRM = async () => {
           </div>
           {addressLine && (
             <div style={{ fontSize:12, color:'#A8BFDA', borderLeft:'1px solid #2d4f7a', paddingLeft:16 }}>
-              ðŸ“ {addressLine}
+              📍 {addressLine}
             </div>
           )}
         </div>
@@ -474,7 +474,7 @@ const sendToCRM = async () => {
         <div style={{ display:'flex', alignItems:'center', gap:10 }}>
           {dangerCount > 0 && (
             <span style={{ fontSize:11, background:'#fdecea', color:'#C0392B', border:'1px solid #f5b7b1', padding:'4px 12px', borderRadius:20, fontWeight:600 }}>
-              ðŸš¨ {dangerCount} critical
+              🚨 {dangerCount} critical
             </span>
           )}
           {warningCount > 0 && (
@@ -486,12 +486,12 @@ const sendToCRM = async () => {
             onClick={exportPDF}
             disabled={exporting}
             style={{ fontSize:12, fontWeight:700, padding:'7px 16px', borderRadius:8, border:'2px solid #2EC4B6', background:'#1a4a40', color:'#2EC4B6', cursor:exporting?'not-allowed':'pointer', display:'flex', alignItems:'center', gap:6 }}>
-            {exporting ? 'â³ Exporting...' : 'ðŸ“„ Export PDF'}
+            {exporting ? ⏳ Exporting...' : 📄„ Export PDF'}
          </button>
           <button
             onClick={sendToCRM}
             style={{ fontSize:12, fontWeight:700, padding:'7px 16px', borderRadius:8, border:'2px solid #0F6E56', background:'#0a3d2e', color:'#2EC4B6', cursor:'pointer', display:'flex', alignItems:'center', gap:6 }}>
-            ðŸ  Send to CRM
+            🏠 Send to CRM
           </button>
           <span style={{ fontSize:11, fontWeight:700, padding:'4px 14px', borderRadius:20, border:`2px solid ${scoreColor}`, color:'#fff', background:score.score>=70?'#1a8a82':score.score>=45?'#b5601a':'#922b21' }}>
             Deal Score {score.score}/100 ({score.grade})
