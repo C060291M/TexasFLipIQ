@@ -64,7 +64,7 @@ const f = (n: number) =>
 const p = (n: number) =>
   (Math.round(n * 10) / 10) + '%';
 
-export default function Dashboard() {
+function DashboardInner() {
   const [input, setInput]               = useState<PropertyInput>(DEFAULT_INPUT);
   const [activeTab, setActiveTab]       = useState<TabId>('overview');
   const [enabledItems, setEnabledItems] = useState<Record<string, boolean>>({});
