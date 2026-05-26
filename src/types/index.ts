@@ -1,4 +1,4 @@
-export type PropertyCondition = 'light' | 'moderate' | 'heavy' | 'gut';
+﻿export type PropertyCondition = 'light' | 'moderate' | 'heavy' | 'gut';
 export type PropertyType = 'sfr' | 'duplex' | 'triplex' | 'fourplex' | 'condo' | 'townhome';
 export type ExitStrategy = 'flip' | 'str' | 'ltr';
 export type FinishLevel = 'economy' | 'standard' | 'premium' | 'luxury';
@@ -48,6 +48,7 @@ export interface PropertyInput {
 }
 
 export interface RehabLineItems {
+  [key: string]: number | undefined;
   kitchen: number;
   bathrooms: number;
   flooring: number;
@@ -216,3 +217,4 @@ export interface RegionalPricing {
   lastUpdated: string;
   dataSource: string;
 }
+
