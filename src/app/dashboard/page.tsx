@@ -1,6 +1,6 @@
 ﻿'use client';
 
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import type { PropertyInput, RehabResult } from '@/types';
 import { calculateRehab } from '@/lib/engines/rehabEngine';
@@ -542,3 +542,10 @@ const sendToCRM = async () => {
   );
 }
 
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DashboardInner />
+    </Suspense>
+  );
+}
