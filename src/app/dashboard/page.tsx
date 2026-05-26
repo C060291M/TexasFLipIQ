@@ -142,7 +142,7 @@ const sendToCRM = async () => {
         exitStrategy: input?.exitStrategy || 'Fix & Flip',
       }
 
-      const response = await fetch('http://localhost:3000/api/send-to-crm', {
+      const response = await fetch('https://api.stackiq.org/api/send-to-crm', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
