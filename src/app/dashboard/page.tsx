@@ -479,7 +479,7 @@ const sendToCRM = async () => {
           )}
           {warningCount > 0 && (
             <span style={{ fontSize:11, background:'#fef5e7', color:'#E07B2A', border:'1px solid #f8c471', padding:'4px 12px', borderRadius:20, fontWeight:600 }}>
-              âš  {warningCount} warnings
+              ⚠️  {warningCount} warnings
             </span>
           )}
           <button
@@ -518,7 +518,7 @@ const sendToCRM = async () => {
           {Object.values(enabledItems).some(v => v === false) && activeTab !== 'rehab' && (
             <div style={{ background:'#e8faf9', border:'1px solid #2EC4B6', borderRadius:10, padding:'10px 16px', marginBottom:16, display:'flex', alignItems:'center', justifyContent:'space-between', fontSize:13 }}>
               <span>
-                <strong style={{ color:'#1a8a82' }}>Rehab scope adjusted â€” </strong>
+                <strong style={{ color:'#1a8a82' }}>Rehab scope adjusted —” </strong>
                 <span style={{ color:'#1F3A5F' }}>
                   Using <strong>{f(adjustedRehab.total)}</strong> adjusted rehab
                   (vs <strong>{f(rehab.total)}</strong> full). All calculations updated.
