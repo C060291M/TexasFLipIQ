@@ -64,10 +64,20 @@ const f = (n: number) =>
 const p = (n: number) =>
   (Math.round(n * 10) / 10) + '%';
 
+// Parse a custom budget string to a number, or return null if invalid
+function parseCustom(raw: string | undefined): number | null {
+  if (raw === undefined || raw.trim() === '') return null;
+  const parsed = parseFloat(raw.replace(/[,$]/g, ''));
+  if (isNaN(parsed) || parsed < 0) return null;
+  return Math.round(parsed);
+}
+
 function DashboardInner() {
   const [input, setInput]               = useState<PropertyInput>(DEFAULT_INPUT);
   const [activeTab, setActiveTab]       = useState<TabId>('overview');
   const [enabledItems, setEnabledItems] = useState<Record<string, boolean>>({});
+  // Custom budget overrides — key -> raw string value from input
+  const [customBudgets, setCustomBudgets] = useState<Record<string, string>>({});
   const [exporting, setExporting]       = useState(false);
 
   const updateInput = useCallback(
@@ -92,6 +102,12 @@ function DashboardInner() {
   const adjustedRehab = useMemo((): RehabResult => {
     const items = { ...rehab.lineItems };
     for (const key of Object.keys(items)) {
+      // Apply custom budget override first
+      const customVal = parseCustom(customBudgets[key]);
+      if (customVal !== null) {
+        (items as Record<string, number>)[key] = customVal;
+      }
+      // Then zero out if toggled off
       if (enabledItems[key] === false) {
         (items as Record<string, number>)[key] = 0;
       }
@@ -103,7 +119,7 @@ function DashboardInner() {
       total: Math.round(total ?? 0),
       perSqft: input.sqft > 0 ? Math.round((total ?? 0) / input.sqft) : 0,
     };
-  }, [rehab, enabledItems, input.sqft]);
+  }, [rehab, enabledItems, customBudgets, input.sqft]);
 
   const deal  = useMemo(() => calculateDeal(input, adjustedRehab), [input, adjustedRehab]);
   const risks = useMemo(() => analyzeRisks(input, adjustedRehab, deal), [input, adjustedRehab, deal]);
@@ -122,7 +138,10 @@ function DashboardInner() {
     : input.zipCode
     ? `TX ${input.zipCode}`
     : '';
-const sendToCRM = async () => {
+
+  const customCount = Object.keys(customBudgets).filter(k => parseCustom(customBudgets[k]) !== null).length;
+
+  const sendToCRM = async () => {
     try {
       const payload = {
         address:      input?.address || '',
@@ -151,14 +170,15 @@ const sendToCRM = async () => {
       const data = await response.json()
 
       if (data.success) {
-        alert(' Deal data sent to UnderwriteIQ CRM!\n\nGo to the CRM tab in your dashboard and click "Import from FlipIQ" on the matching lead to populate the deal numbers.')
+        alert('Deal data sent to UnderwriteIQ CRM!\n\nGo to the CRM tab in your dashboard and click "Import from FlipIQ" on the matching lead to populate the deal numbers.')
       } else {
-        alert(' Could not send to CRM. Make sure UnderwriteIQ is running at localhost:8000')
+        alert('Could not send to CRM. Make sure UnderwriteIQ is running at localhost:8000')
       }
     } catch (error) {
-      alert(' Connection failed. Make sure both FlipIQ and UnderwriteIQ are running.')
+      alert('Connection failed. Make sure both FlipIQ and UnderwriteIQ are running.')
     }
   }
+
   const exportPDF = async () => {
     setExporting(true);
     try {
@@ -168,7 +188,6 @@ const sendToCRM = async () => {
       const margin = 18;
       let y        = 0;
 
-      //  Header 
       doc.setFillColor(31, 58, 95);
       doc.rect(0, 0, W, 38, 'F');
 
@@ -202,7 +221,6 @@ const sendToCRM = async () => {
 
       y = 48;
 
-      //  Address 
       doc.setTextColor(31, 58, 95);
       doc.setFontSize(14);
       doc.setFont('helvetica', 'bold');
@@ -220,17 +238,16 @@ const sendToCRM = async () => {
         input.exitStrategy.toUpperCase(),
         input.isWaterfront ? 'Waterfront' : '',
         input.hasPool ? 'Pool' : '',
+        customCount > 0 ? `${customCount} custom budget${customCount !== 1 ? 's' : ''}` : '',
       ].filter(Boolean).join('  ');
       doc.text(details, margin, y);
       y += 10;
 
-      //  Divider 
       doc.setDrawColor(221, 227, 236);
       doc.setLineWidth(0.5);
       doc.line(margin, y, W - margin, y);
       y += 8;
 
-      //  Key metrics 
       doc.setFontSize(8);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(107, 124, 147);
@@ -281,7 +298,6 @@ const sendToCRM = async () => {
 
       y += Math.ceil(metrics.length / 4) * (boxH + 3) + 8;
 
-      //  Waterfall 
       doc.setDrawColor(221, 227, 236);
       doc.line(margin, y, W - margin, y);
       y += 6;
@@ -338,7 +354,6 @@ const sendToCRM = async () => {
 
       y += 6;
 
-      //  Rehab breakdown 
       doc.setDrawColor(221, 227, 236);
       doc.line(margin, y, W - margin, y);
       y += 6;
@@ -358,30 +373,39 @@ const sendToCRM = async () => {
         contingency: 'Contingency',
       };
 
-      const activeItems = Object.entries(adjustedRehab.lineItems)
+      const activeLineItems = Object.entries(adjustedRehab.lineItems)
         .filter(([, v]) => (v ?? 0) > 0)
         .sort((a, b) => (b[1] ?? 0) - (a[1] ?? 0));
 
       const colW2 = (W - margin * 2) / 3;
-      activeItems.forEach(([key, val], i) => {
+      activeLineItems.forEach(([key, val], i) => {
         const col = i % 3;
         const row = Math.floor(i / 3);
         const x   = margin + col * colW2;
         const yy  = y + row * 10;
-        doc.setFillColor(245, 246, 248);
+        const isCustom = parseCustom(customBudgets[key]) !== null;
+        doc.setFillColor(isCustom ? 255 : 245, isCustom ? 248 : 246, isCustom ? 240 : 248);
         doc.rect(x, yy - 3, colW2 - 2, 9, 'F');
         doc.setFontSize(8);
         doc.setFont('helvetica', 'normal');
         doc.setTextColor(107, 124, 147);
-        doc.text(labelMap[key] || key, x + 2, yy + 2);
+        doc.text((labelMap[key] || key) + (isCustom ? ' *' : ''), x + 2, yy + 2);
         doc.setFont('helvetica', 'bold');
-        doc.setTextColor(31, 58, 95);
+        doc.setTextColor(isCustom ? 147 : 31, isCustom ? 81 : 58, isCustom ? 22 : 95);
         doc.text(f(val ?? 0), x + colW2 - 4, yy + 2, { align: 'right' });
       });
 
-      y += Math.ceil(activeItems.length / 3) * 10 + 6;
+      y += Math.ceil(activeLineItems.length / 3) * 10 + 6;
 
-      //  Risk flags 
+      // Custom budget note in PDF
+      if (customCount > 0 && y < 235) {
+        doc.setFontSize(7);
+        doc.setFont('helvetica', 'italic');
+        doc.setTextColor(147, 81, 22);
+        doc.text(`* ${customCount} item${customCount !== 1 ? 's' : ''} use custom budget overrides`, margin, y);
+        y += 6;
+      }
+
       if (y < 240) {
         doc.setDrawColor(221, 227, 236);
         doc.line(margin, y, W - margin, y);
@@ -411,7 +435,6 @@ const sendToCRM = async () => {
         });
       }
 
-      //  Comp disclaimer 
       if (y < 265) {
         y += 4;
         doc.setFillColor(254, 245, 231);
@@ -425,7 +448,6 @@ const sendToCRM = async () => {
         y += 18;
       }
 
-      //  Footer 
       doc.setFillColor(31, 58, 95);
       doc.rect(0, 282, W, 15, 'F');
       doc.setTextColor(168, 191, 218);
@@ -487,7 +509,7 @@ const sendToCRM = async () => {
             disabled={exporting}
             style={{ fontSize:12, fontWeight:700, padding:'7px 16px', borderRadius:8, border:'2px solid #2EC4B6', background:'#1a4a40', color:'#2EC4B6', cursor:exporting?'not-allowed':'pointer', display:'flex', alignItems:'center', gap:6 }}>
             {exporting ? 'Exporting...' : 'Export PDF'}
-         </button>
+          </button>
           <button
             onClick={sendToCRM}
             style={{ fontSize:12, fontWeight:700, padding:'7px 16px', borderRadius:8, border:'2px solid #0F6E56', background:'#0a3d2e', color:'#2EC4B6', cursor:'pointer', display:'flex', alignItems:'center', gap:6 }}>
@@ -515,17 +537,22 @@ const sendToCRM = async () => {
         <main style={{ flex:1, overflowY:'auto', padding:24, background:'#F5F6F8' }}>
 
           {/* Rehab adjustment banner */}
-          {Object.values(enabledItems).some(v => v === false) && activeTab !== 'rehab' && (
+          {(Object.values(enabledItems).some(v => v === false) || customCount > 0) && activeTab !== 'rehab' && (
             <div style={{ background:'#e8faf9', border:'1px solid #2EC4B6', borderRadius:10, padding:'10px 16px', marginBottom:16, display:'flex', alignItems:'center', justifyContent:'space-between', fontSize:13 }}>
               <span>
                 <strong style={{ color:'#1a8a82' }}>Rehab scope adjusted  </strong>
                 <span style={{ color:'#1F3A5F' }}>
                   Using <strong>{f(adjustedRehab.total)}</strong> adjusted rehab
-                  (vs <strong>{f(rehab.total)}</strong> full). All calculations updated.
+                  (vs <strong>{f(rehab.total)}</strong> full).
+                  {customCount > 0 && <span style={{ color:'#E07B2A' }}> {customCount} custom budget{customCount!==1?'s':''}.</span>}
+                  {' '}All calculations updated.
                 </span>
               </span>
               <button
-                onClick={() => setEnabledItems(prev => Object.fromEntries(Object.keys(prev).map(k => [k, true])))}
+                onClick={() => {
+                  setEnabledItems(prev => Object.fromEntries(Object.keys(prev).map(k => [k, true])));
+                  setCustomBudgets({});
+                }}
                 style={{ fontSize:11, padding:'4px 12px', border:'1px solid #2EC4B6', borderRadius:6, background:'#fff', color:'#1a8a82', cursor:'pointer', fontWeight:600, whiteSpace:'nowrap', marginLeft:16 }}>
                 Reset all
               </button>
@@ -533,7 +560,17 @@ const sendToCRM = async () => {
           )}
 
           {activeTab === 'overview'  && <DealOverviewPanel input={input} rehab={adjustedRehab} fullRehab={rehab} deal={deal} risks={risks} onUpdatePurchasePrice={price => updateInput('purchasePrice', price)} />}
-          {activeTab === 'rehab'     && <RehabBreakdownPanel input={input} rehab={rehab} enabledItems={enabledItems} onToggle={key => setEnabledItems(prev => ({ ...prev, [key]: !prev[key] }))} onSetEnabled={setEnabledItems} />}
+          {activeTab === 'rehab'     && (
+            <RehabBreakdownPanel
+              input={input}
+              rehab={rehab}
+              enabledItems={enabledItems}
+              onToggle={key => setEnabledItems(prev => ({ ...prev, [key]: !prev[key] }))}
+              onSetEnabled={setEnabledItems}
+              customBudgets={customBudgets}
+              onSetCustomBudgets={setCustomBudgets}
+            />
+          )}
           {activeTab === 'strategy'  && <StrategyPanel input={input} rehab={adjustedRehab} deal={deal} recommendations={recs} />}
           {activeTab === 'comps'     && <CompsPanel input={input} comps={comps} risks={risks} onUpdateArv={arv => updateInput('arv', arv)} />}
         </main>
